@@ -1,29 +1,40 @@
+from typing import Optional
+
+class ListNode:
+    """
+    Определение для односвязного списка.
+    """
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
+
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        cur_list = ListNode(0, None)
-        head = None
+        """
+        Объединяет два отсортированных связанных списка в один отсортированный связанный список.
 
-        if list1.val < list2.val:
-            head = ListNode(list1.val, None)
-        else:
-            head = ListNode(list2.val, None)
+        Args:
+            list1: Голова первого отсортированного связанного списка.
+            list2: Голова второго отсортированного связанного списка.
 
-        while list1 is not None and list2 is not None:
-            cur_list.next = ListNode(0, None)
+        Returns:
+            Голова объединенного отсортированного связанного списка.
+        """
+        dummy = ListNode()
+        current = dummy
 
+        while list1 and list2:
             if list1.val < list2.val:
-                cur_list.val = list1.val
+                current.next = list1
                 list1 = list1.next
             else:
-                cur_list.val = list2.val
+                current.next = list2
                 list2 = list2.next
+            current = current.next
 
-            cur_list = cur_list.next
+        if list1:
+            current.next = list1
+        elif list2:
+            current.next = list2
 
-        if list1 is not None:
-            cur_list.next = ListNode(list1.val, None)
-        else:
-            cur_list.next = ListNode(list2.val, None)
-
-        return head
-
+        return dummy.next
